@@ -1,66 +1,129 @@
+.lead-form-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+
+/* Mobile: use the full viewport so the form takes the entire screen */
+@media (max-width: 640px) {
+    .lead-form-wrapper {
+        padding: 0;
+        min-height: 100vh;
+    }
+
+    .lead-form {
+        width: 100%;
+        max-width: 100%;
+        height: 100vh;
+        /* fill the screen */
+        margin: 0;
+        border-radius: 0;
+        /* flat edges on mobile */
+        box-shadow: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* center content vertically */
+        padding: 1.25rem;
+    }
+
+    .lead-form-input,
+    .lead-form-textarea {
+        font-size: 1.05rem;
+        padding: 0.9rem;
+    }
+
+    .lead-form-title {
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+}
+
 .lead-form {
-    max-width: 500px;
+    max-width: 600px;
     margin: 0 auto;
     padding: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--input-border);
+    border-radius: 12px;
+    background-color: var(--farm-surface);
+    box-shadow: 0 8px 24px rgba(38, 34, 22, 0.06);
 }
 
 .lead-form-title {
-    font-size: 1.5rem;
-    font-weight: bold;
+    font-size: 1.25rem;
+    font-weight: 700;
     margin-bottom: 1rem;
     text-align: center;
-    color: #333;
+    color: var(--farm-accent-dark);
+}
+
+/* two-column layout for name fields on wider screens */
+.lead-form .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+@media (min-width: 640px) {
+    .lead-form .row {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
 }
 
 .lead-form-input,
 .lead-form-textarea {
     width: 100%;
     padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    margin-bottom: 0;
+    border: 1px solid var(--input-border);
+    border-radius: 8px;
     font-size: 1rem;
-    background-color: #fff;
-    color: #333;
+    background-color: var(--farm-surface);
+    color: var(--farm-text);
+    box-sizing: border-box;
 }
 
 .lead-form-textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 110px;
 }
 
+/* fallback submit style (Button component will use .btn- classes) */
 .lead-form-submit {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
-    font-weight: bold;
-    color: #fff;
-    background-color: #007bff;
+    font-weight: 700;
+    color: var(--farm-text);
+    background-color: var(--farm-cta);
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.18s ease;
 }
 
 .lead-form-submit:hover {
-    background-color: #0056b3;
+    background-color: var(--farm-cta-dark);
 }
 
-.lead-form-submit:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+/* error text */
+.lead-form .error {
+    color: #b04a4a;
+    margin-bottom: 0.5rem;
 }
 
+/* spacing tweaks for mobile */
 @media (max-width: 600px) {
     .lead-form {
         padding: 1rem;
     }
 
     .lead-form-title {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
     }
 }

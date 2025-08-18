@@ -49,58 +49,60 @@ export default function LeadForm({ type }: LeadFormProps) {
     return (
         <>
             {error && <p className="text-red-500">{error}</p>}
-            <form onSubmit={handleSubmit} className="lead-form max-w-md mx-auto p-4 border rounded space-y-3">
-                <h2 className="lead-form-title text-xl font-bold">{leadConfig.title}</h2>
-                <input
-                    type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                    className="lead-form-input w-full p-2 border rounded"
-                />
-                <input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                    className="lead-form-input w-full p-2 border rounded"
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email Address"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="lead-form-input w-full p-2 border rounded"
-                />
-                <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone Number"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="lead-form-input w-full p-2 border rounded"
-                />
-                <textarea
-                    name="notes"
-                    placeholder="Additional Notes"
-                    value={formData.notes}
-                    onChange={handleChange}
-                    className="lead-form-textarea w-full p-2 border rounded"
-                />
-                <Button
-                    type="submit" // Automatically fetches `htmlType` and styles from the configuration
-                    disabled={loading}
-                    className="w-full"
-                >
-                    {loading ? "Submitting..." : "Submit"}
-                </Button>
-            </form>
+            <div className="lead-form-wrapper">
+                <form onSubmit={handleSubmit} className="lead-form max-w-md mx-auto p-4 border rounded space-y-3">
+                    <h2 className="lead-form-title text-xl font-bold">{leadConfig.title}</h2>
+                    <input
+                        type="text"
+                        name="firstName"
+                        placeholder="First Name"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                        required
+                        className="lead-form-input w-full p-2 border rounded"
+                    />
+                    <input
+                        type="text"
+                        name="lastName"
+                        placeholder="Last Name"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                        required
+                        className="lead-form-input w-full p-2 border rounded"
+                    />
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email Address"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        className="lead-form-input w-full p-2 border rounded"
+                    />
+                    <input
+                        type="tel"
+                        name="phone"
+                        placeholder="Phone Number"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        className="lead-form-input w-full p-2 border rounded"
+                    />
+                    <textarea
+                        name="notes"
+                        placeholder="Additional Notes"
+                        value={formData.notes}
+                        onChange={handleChange}
+                        className="lead-form-textarea w-full p-2 border rounded"
+                    />
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full"
+                    >
+                        {loading ? "Submitting..." : "Submit"}
+                    </Button>
+                </form>
+            </div>
         </>
     );
 }

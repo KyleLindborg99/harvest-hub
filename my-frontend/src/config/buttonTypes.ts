@@ -1,25 +1,24 @@
 export const buttonTypes = {
     primary: {
-        className: "bg-blue-600 text-white hover:bg-blue-700",
-        htmlType: "button", // Default HTML type for primary buttons
+        className: "btn btn-primary",
+        htmlType: "button",
     },
     secondary: {
-        className: "bg-gray-600 text-white hover:bg-gray-700",
-        htmlType: "button", // Default HTML type for secondary buttons
+        className: "btn btn-secondary",
+        htmlType: "button",
     },
     danger: {
-        className: "bg-red-600 text-white hover:bg-red-700",
-        htmlType: "button", // Default HTML type for danger buttons
+        className: "btn btn-danger",
+        htmlType: "button",
     },
     success: {
-        className: "bg-green-600 text-white hover:bg-green-700",
-        htmlType: "button", // Default HTML type for success buttons
+        className: "btn btn-success",
+        htmlType: "button",
     },
     submit: {
-        className: "bg-blue-600 text-white hover:bg-blue-700",
-        htmlType: "submit", // Specific HTML type for submit buttons
+        className: "btn btn-primary",
+        htmlType: "submit",
     },
-    // 🔮 Add more button types here in the future
 } as const;
 
 // Type-safe keys, e.g., "primary" | "secondary" | "danger" | "success" | "submit"
