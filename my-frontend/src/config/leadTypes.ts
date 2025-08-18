@@ -1,14 +1,12 @@
 export const leadTypes = {
     share: {
         title: "Share Interest Form",
-        collection: "shareLeads",
+        collection: "leads", // Single collection for all leads
     },
     member: {
         title: "Membership Interest Form",
-        collection: "memberLeads",
+        collection: "leads", // Single collection for all leads
     },
-    // 🔮 add more types here in the future
 } as const;
 
-// Type-safe keys, e.g. "share" | "member"
 export type LeadType = keyof typeof leadTypes;
