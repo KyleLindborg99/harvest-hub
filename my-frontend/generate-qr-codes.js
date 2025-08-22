@@ -1,7 +1,7 @@
 // Simple QR Code generator for demo
 // Run with: node generate-qr-codes.js
 
-const base_url = 'https://harvesthub-ed691.web.app';
+const base_url = 'https://harvest-hub-michigan.netlify.app';
 
 const qr_urls = {
     share: `${base_url}/form/sh7x9m2k4p`,

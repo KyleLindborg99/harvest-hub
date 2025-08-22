@@ -24,11 +24,11 @@ https://harvesthub-ed691.web.app/form/{TOKEN}
 
 **Token:** `sh7x9m2k4p`
 
-**Full URL:** `https://harvesthub-ed691.web.app/form/sh7x9m2k4p`
+**Full URL:** `https://harvest-hub-michigan.netlify.app/form/sh7x9m2k4p`
 
 **QR Code Image URL:** 
 ```
-https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fharvesthub-ed691.web.app%2Fform%2Fsh7x9m2k4p
+https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fharvest-hub-michigan.netlify.app%2Fform%2Fsh7x9m2k4p
 ```
 
 **Form Fields:**
@@ -48,11 +48,11 @@ https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fharv
 
 **Token:** `mb3n8q5w1z`
 
-**Full URL:** `https://harvesthub-ed691.web.app/form/mb3n8q5w1z`
+**Full URL:** `https://harvest-hub-michigan.netlify.app/form/mb3n8q5w1z`
 
 **QR Code Image URL:**
 ```
-https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fharvesthub-ed691.web.app%2Fform%2Fmb3n8q5w1z
+https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fharvest-hub-michigan.netlify.app%2Fform%2Fmb3n8q5w1z
 ```
 
 **Form Fields:**
@@ -82,10 +82,10 @@ export const FORM_TOKENS = {
 - Invalid tokens redirect to home (`/`)
 
 ### Data Storage
-- Backend: Firebase Firestore
-- Collection: `leads`
-- Document ID: `{email}_{type}` format
-- Fields: formData + type + timestamp
+- Backend: Supabase PostgreSQL
+- Table: `leads`
+- Primary Key: UUID
+- Fields: email, first_name, last_name, phone, notes, type, created_at
 
 ## QR Code Generation Options
 
@@ -137,11 +137,11 @@ Use any QR code generator with the form URLs above.
 
 ## Monitoring & Analytics
 
-### Firebase Console
-- **Project:** harvesthub-ed691
-- **Console URL:** https://console.firebase.google.com/project/harvesthub-ed691/overview
-- **Hosting:** https://harvesthub-ed691.web.app
-- **Firestore:** Monitor lead submissions in real-time
+### Supabase Dashboard
+- **Project:** uzqbsotbrwoactrcgooz
+- **Console URL:** https://supabase.com/dashboard/project/uzqbsotbrwoactrcgooz
+- **Hosting:** https://harvest-hub-michigan.netlify.app
+- **Database:** Monitor lead submissions in real-time
 
 ### Key Metrics to Track
 - QR code scans (via analytics)
@@ -155,12 +155,12 @@ Use any QR code generator with the form URLs above.
 ### QR Code Not Working
 1. Verify URL accessibility in browser
 2. Check token spelling in `formTokens.ts`
-3. Ensure Firebase deployment is current
+3. Ensure Netlify deployment is current
 4. Test with different QR scanning apps
 
 ### Form Submission Issues
-1. Check Firebase console for errors
-2. Verify Firestore security rules
+1. Check Supabase dashboard for errors
+2. Verify Supabase Row Level Security (RLS) policies
 3. Test internet connectivity
 4. Check browser console for JavaScript errors
 
@@ -171,7 +171,7 @@ Use any QR code generator with the form URLs above.
 2. Add to `FORM_TOKENS` object
 3. Update `TOKEN_TO_FORM_TYPE` mapping
 4. Create new QR code with updated URL
-5. Deploy changes with `firebase deploy`
+5. Deploy changes with `git push` (auto-deploys to Netlify)
 
 ### Changing QR Code Design
 1. Use different QR generator service
@@ -190,6 +190,6 @@ Use any QR code generator with the form URLs above.
 
 ---
 
-**Last Updated:** $(date)
-**Firebase Project:** harvesthub-ed691
-**Deployment URL:** https://harvesthub-ed691.web.app
+**Last Updated:** 2024-12-22
+**Supabase Project:** uzqbsotbrwoactrcgooz  
+**Deployment URL:** https://harvest-hub-michigan.netlify.app

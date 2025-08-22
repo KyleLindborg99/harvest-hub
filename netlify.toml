@@ -1,6 +1,6 @@
 [build]
-  command = "npm run build"
-  publish = "dist"
+  command = "cd my-frontend && npm install && npm run build"
+  publish = "my-frontend/dist"
 
 [build.environment]
   NODE_VERSION = "18"
