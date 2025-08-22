@@ -6,7 +6,9 @@
       "Bash(mv:*)",
       "Bash(firebase --version)",
       "Bash(npm run build:*)",
-      "Bash(firebase login:*)"
+      "Bash(firebase login:*)",
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)"
     ],
     "deny": [],
     "ask": []

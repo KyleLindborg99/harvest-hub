@@ -1,6 +1,6 @@
 // Dependency Injection Container
 import type { ILeadRepository } from '../../domain/repositories/ILeadRepository';
-import { FirebaseLeadRepository } from '../repositories/FirebaseLeadRepository';
+import { SupabaseLeadRepository } from '../repositories/SupabaseLeadRepository';
 import { LeadDomainService } from '../../domain/services/LeadDomainService';
 import { CreateLeadUseCase } from '../../application/usecases/CreateLeadUseCase';
 
@@ -25,7 +25,7 @@ class DIContainer {
 const container = new DIContainer();
 
 // Register dependencies (following dependency inversion)
-const leadRepository: ILeadRepository = new FirebaseLeadRepository();
+const leadRepository: ILeadRepository = new SupabaseLeadRepository();
 const leadDomainService = new LeadDomainService(leadRepository);
 const createLeadUseCase = new CreateLeadUseCase(leadDomainService);
 
