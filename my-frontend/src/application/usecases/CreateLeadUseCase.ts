@@ -1,9 +1,13 @@
 // Application Layer - Use Cases (Orchestrates domain services)
-import { LeadFormData, LeadType } from '../../domain/models/Lead';
+import type { LeadFormData, LeadType } from '../../domain/models/Lead';
 import { LeadDomainService } from '../../domain/services/LeadDomainService';
 
 export class CreateLeadUseCase {
-    constructor(private readonly leadDomainService: LeadDomainService) {}
+    private leadDomainService: LeadDomainService;
+    
+    constructor(leadDomainService: LeadDomainService) {
+        this.leadDomainService = leadDomainService;
+    }
 
     async execute(formData: LeadFormData, type: LeadType): Promise<void> {
         try {

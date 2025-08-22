@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rmdir:*)",
+      "Bash(ren:*)",
+      "Bash(mv:*)",
+      "Bash(firebase --version)",
+      "Bash(npm run build:*)",
+      "Bash(firebase login:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

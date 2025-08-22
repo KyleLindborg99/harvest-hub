@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { validateFormToken } from '../../config/formTokens';
-import { LeadType } from '../../domain/models/Lead';
+import type { LeadType } from '../../domain/models/Lead';
 import LeadForm from './LeadForm';
 
 export default function TokenFormPage(): React.ReactElement {

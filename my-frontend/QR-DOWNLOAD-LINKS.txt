@@ -1,0 +1,18 @@
+HarvestHub QR Code Download Links
+====================================
+
+Share Form QR Code:
+https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fharvesthub-ed691.web.app%2Fform%2Fsh7x9m2k4p
+
+Membership Form QR Code:
+https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https%3A%2F%2Fharvesthub-ed691.web.app%2Fform%2Fmb3n8q5w1z
+
+Instructions:
+1. Visit URLs on phone
+2. Long press QR code image
+3. Save to photos
+4. Use for demo/sharing
+
+Form URLs (what the QR codes point to):
+- Share: https://harvesthub-ed691.web.app/form/sh7x9m2k4p
+- Member: https://harvesthub-ed691.web.app/form/mb3n8q5w1z

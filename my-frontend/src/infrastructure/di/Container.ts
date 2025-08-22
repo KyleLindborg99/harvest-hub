@@ -1,5 +1,5 @@
 // Dependency Injection Container
-import { ILeadRepository } from '../../domain/repositories/ILeadRepository';
+import type { ILeadRepository } from '../../domain/repositories/ILeadRepository';
 import { FirebaseLeadRepository } from '../repositories/FirebaseLeadRepository';
 import { LeadDomainService } from '../../domain/services/LeadDomainService';
 import { CreateLeadUseCase } from '../../application/usecases/CreateLeadUseCase';

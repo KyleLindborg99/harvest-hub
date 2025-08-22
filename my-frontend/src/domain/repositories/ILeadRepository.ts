@@ -1,5 +1,5 @@
 // Domain Repository Interface - No implementation details
-import { Lead, LeadFormData, LeadType } from '../models/Lead';
+import type { Lead, LeadFormData, LeadType } from '../models/Lead';
 
 export interface ILeadRepository {
     save(leadData: LeadFormData, type: LeadType): Promise<void>;

@@ -1,8 +1,9 @@
 // Infrastructure Layer - Firebase implementation
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { db } from "../../services/firebase";
-import { ILeadRepository } from "../../domain/repositories/ILeadRepository";
-import { Lead, LeadFormData, LeadType, LeadId } from "../../domain/models/Lead";
+import type { ILeadRepository } from "../../domain/repositories/ILeadRepository";
+import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
+import { LeadId } from "../../domain/models/Lead";
 
 export class FirebaseLeadRepository implements ILeadRepository {
     private readonly collectionName = 'leads';

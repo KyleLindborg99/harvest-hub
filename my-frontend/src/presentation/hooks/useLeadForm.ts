@@ -1,6 +1,6 @@
 // Custom Hook - Handles form state and business logic
 import { useState } from 'react';
-import { LeadFormData, LeadType } from '../../domain/models/Lead';
+import type { LeadFormData, LeadType } from '../../domain/models/Lead';
 import { CreateLeadUseCase } from '../../application/usecases/CreateLeadUseCase';
 import { container } from '../../infrastructure/di/Container';
 

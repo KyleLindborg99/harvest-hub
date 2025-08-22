@@ -1,6 +1,6 @@
 // Pure UI Component - Only handles rendering form fields
 import React from 'react';
-import { LeadFormData } from '../../domain/models/Lead';
+import type { LeadFormData } from '../../domain/models/Lead';
 
 interface LeadFormFieldsProps {
     formData: LeadFormData;

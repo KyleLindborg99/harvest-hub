@@ -1,8 +1,8 @@
 // Domain Models - Core business entities
-import { LeadType } from '../../config/leadTypes';
+import { type LeadType } from '../../config/leadTypes';
 
 // Re-export for convenience
-export { LeadType };
+export type { LeadType };
 
 export interface Lead {
     readonly id: string;
