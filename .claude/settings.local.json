@@ -8,7 +8,8 @@
       "Bash(npm run build:*)",
       "Bash(firebase login:*)",
       "Bash(npm install:*)",
-      "Bash(npm uninstall:*)"
+      "Bash(npm uninstall:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []
