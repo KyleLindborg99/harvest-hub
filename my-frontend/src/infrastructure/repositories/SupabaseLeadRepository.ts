@@ -5,15 +5,25 @@ import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
 
 export class SupabaseLeadRepository implements ILeadRepository {
     async save(leadData: LeadFormData, type: LeadType): Promise<void> {
+        // Check for existing lead first
+        const existingLead = await this.exists(leadData.email, type);
+        if (existingLead) {
+            throw new Error('A lead with this email already exists for this type');
+        }
+
+        // Use upsert with conflict resolution
         const { error } = await supabase
             .from('leads')
-            .insert({
+            .upsert({
                 email: leadData.email,
                 first_name: leadData.firstName,
                 last_name: leadData.lastName,
                 phone: leadData.phone || null,
                 notes: leadData.notes || null,
                 type: type
+            }, { 
+                onConflict: 'email,type',
+                ignoreDuplicates: true 
             });
 
         if (error) {
