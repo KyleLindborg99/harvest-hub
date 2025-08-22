@@ -1,4 +1,21 @@
+/* page-level layout: three-column feel using side-width variable */
+.lead-page {
+    --side-width: clamp(80px, 14vw, 140px);
+    /* smaller on mobile to fit */
+    box-sizing: border-box;
+    padding-left: var(--side-width);
+    padding-right: var(--side-width);
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ensure form sits above side panels */
 .lead-form-wrapper {
+    position: relative;
+    z-index: 2;
     width: 100%;
     display: flex;
     align-items: center;
@@ -7,26 +24,28 @@
     box-sizing: border-box;
 }
 
-/* Mobile: use the full viewport so the form takes the entire screen */
+/* Mobile: keep the side gutters (so collage images appear) but make the form narrower */
+/* Previously the form filled the viewport on mobile; now we reserve side gutters for the collage */
 @media (max-width: 640px) {
+    .lead-page {
+        /* keep gutters so collage is visible */
+        padding-left: var(--side-width);
+        padding-right: var(--side-width);
+    }
+
     .lead-form-wrapper {
-        padding: 0;
-        min-height: 100vh;
+        padding: 0.5rem;
+        min-height: auto;
     }
 
     .lead-form {
         width: 100%;
-        max-width: 100%;
-        height: 100vh;
-        /* fill the screen */
+        max-width: 420px;
+        /* narrower center column on mobile so side images are visible */
         margin: 0;
-        border-radius: 0;
-        /* flat edges on mobile */
-        box-shadow: none;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        /* center content vertically */
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(38, 34, 22, 0.06);
+        display: block;
         padding: 1.25rem;
     }
 
@@ -37,11 +56,12 @@
     }
 
     .lead-form-title {
-        text-align: left;
+        text-align: center;
         margin-bottom: 1rem;
     }
 }
 
+/* Desktop / tablet form surface */
 .lead-form {
     max-width: 600px;
     margin: 0 auto;
@@ -50,8 +70,11 @@
     border-radius: 12px;
     background-color: var(--farm-surface);
     box-shadow: 0 8px 24px rgba(38, 34, 22, 0.06);
+    /* improve touch target and spacing */
+    display: block;
 }
 
+/* Title styling */
 .lead-form-title {
     font-size: 1.25rem;
     font-weight: 700;
@@ -75,6 +98,7 @@
     }
 }
 
+/* input / textarea surface */
 .lead-form-input,
 .lead-form-textarea {
     width: 100%;
