@@ -1,0 +1,35 @@
+name: Send Email Notifications
+
+on:
+  schedule:
+    # Run twice daily: 9 AM and 6 PM UTC (adjust for your timezone)
+    - cron: '0 9,18 * * *'
+  
+  # Allow manual triggering for testing
+  workflow_dispatch:
+
+jobs:
+  send-notifications:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Send notification request
+      run: |
+        echo "Triggering email notifications..."
+        response=$(curl -s -w "%{http_code}" -X POST "${{ secrets.NETLIFY_FUNCTION_URL }}")
+        http_code="${response: -3}"
+        response_body="${response%???}"
+        
+        echo "Response: $response_body"
+        echo "HTTP Status: $http_code"
+        
+        if [ "$http_code" -ne 200 ]; then
+          echo "❌ Notification request failed with status $http_code"
+          exit 1
+        else
+          echo "✅ Notifications processed successfully"
+        fi
+    
+    - name: Log completion
+      run: |
+        echo "Email notification job completed at $(date)"
