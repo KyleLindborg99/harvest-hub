@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 // Inline EmailService to avoid import issues with Netlify Functions
 class EmailService {
     constructor() {
-        this.transporter = nodemailer.createTransporter({
+        this.transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: process.env.GMAIL_USER,

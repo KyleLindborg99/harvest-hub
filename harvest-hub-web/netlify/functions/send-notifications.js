@@ -10,7 +10,7 @@ const supabase = createClient(
 // Inline EmailService
 class EmailService {
     constructor() {
-        this.transporter = nodemailer.createTransporter({
+        this.transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: process.env.GMAIL_USER,
