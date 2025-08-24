@@ -13,7 +13,7 @@ export class LeadDomainService {
         this.validateLeadData(formData);
 
         // Validate email
-        const email = new Email(formData.email);
+        new Email(formData.email); // Validates email format
 
         // Save through repository (repository handles insert vs update logic)
         await this.leadRepository.save(formData, type);
