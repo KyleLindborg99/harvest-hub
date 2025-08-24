@@ -50,6 +50,7 @@ export class SupabaseLeadRepository implements ILeadRepository {
     }
 
     async exists(email: string, type: LeadType): Promise<boolean> {
+        console.log("exists() called with:", email, type);
         const { data, error } = await supabase
             .from('leads')
             .select('id')
@@ -57,12 +58,16 @@ export class SupabaseLeadRepository implements ILeadRepository {
             .eq('type', type)
             .limit(1);
 
+        console.log("exists() query result:", { data, error });
+
         if (error) {
             console.error("Supabase error:", error);
             throw new Error(`Failed to check if lead exists: ${error.message}`);
         }
 
-        return data && data.length > 0;
+        const result = data && data.length > 0;
+        console.log("exists() returning:", result);
+        return result;
     }
 
     async findById(id: string): Promise<Lead | null> {
