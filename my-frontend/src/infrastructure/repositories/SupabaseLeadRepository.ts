@@ -20,9 +20,9 @@ export class SupabaseLeadRepository implements ILeadRepository {
         if (insertError) {
             // Check if it's a duplicate key error
             if (insertError.code === '23505' && insertError.message.includes('unique_email_type')) {
-                console.log("Duplicate found, updating existing lead");
+                console.log("Duplicate found, updating existing lead for:", leadData.email, type);
                 // Update existing lead
-                const { error: updateError } = await supabase
+                const { data: updateData, error: updateError } = await supabase
                     .from('leads')
                     .update({
                         first_name: leadData.firstName,
@@ -31,11 +31,18 @@ export class SupabaseLeadRepository implements ILeadRepository {
                         notes: leadData.notes || null,
                     })
                     .eq('email', leadData.email)
-                    .eq('type', type);
+                    .eq('type', type)
+                    .select();
+
+                console.log("Update result:", { updateData, updateError });
 
                 if (updateError) {
                     console.error("Supabase update error:", updateError);
                     throw new Error(`Failed to update lead: ${updateError.message}`);
+                }
+
+                if (!updateData || updateData.length === 0) {
+                    console.warn("No records were updated - check if email/type match exactly");
                 }
             } else {
                 // Some other error
