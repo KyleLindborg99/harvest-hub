@@ -15,14 +15,7 @@ export class LeadDomainService {
         // Validate email
         const email = new Email(formData.email);
 
-        // Check if lead already exists
-        const exists = await this.leadRepository.exists(email.toString(), type);
-        if (exists) {
-            throw new Error(`A lead with email "${email.toString()}" and type "${type}" has already been submitted.`);
-        }
-
-
-        // Save through repository
+        // Save through repository (repository handles insert vs update logic)
         await this.leadRepository.save(formData, type);
     }
 

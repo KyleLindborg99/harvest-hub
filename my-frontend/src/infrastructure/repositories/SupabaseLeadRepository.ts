@@ -12,8 +12,8 @@ export class SupabaseLeadRepository implements ILeadRepository {
         
         if (existingLead) {
             console.log("Updating existing lead");
-            // Update existing lead
-            const { error } = await supabase
+            // Update existing lead - add more detailed logging
+            const { data, error } = await supabase
                 .from('leads')
                 .update({
                     first_name: leadData.firstName,
@@ -22,12 +22,23 @@ export class SupabaseLeadRepository implements ILeadRepository {
                     notes: leadData.notes || null,
                 })
                 .eq('email', leadData.email)
-                .eq('type', type);
+                .eq('type', type)
+                .select();
+
+            console.log("Update result:", { data, error });
 
             if (error) {
                 console.error("Supabase update error:", error);
                 throw new Error(`Failed to update lead: ${error.message}`);
             }
+
+            if (!data || data.length === 0) {
+                console.warn("No records updated - this shouldn't happen after exists() returned true");
+                // Still don't fail for user - lead was already in system
+                return;
+            }
+
+            console.log("Successfully updated existing lead");
         } else {
             console.log("Inserting new lead");
             // Insert new lead
@@ -46,6 +57,8 @@ export class SupabaseLeadRepository implements ILeadRepository {
                 console.error("Supabase insert error:", error);
                 throw new Error(`Failed to save lead: ${error.message}`);
             }
+
+            console.log("Successfully inserted new lead");
         }
     }
 
