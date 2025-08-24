@@ -5,42 +5,42 @@ import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
 
 export class SupabaseLeadRepository implements ILeadRepository {
     async save(leadData: LeadFormData, type: LeadType): Promise<void> {
-        // Check if lead already exists
-        const existingLead = await this.exists(leadData.email, type);
-        
-        if (existingLead) {
-            // Update existing lead
-            const { error } = await supabase
-                .from('leads')
-                .update({
-                    first_name: leadData.firstName,
-                    last_name: leadData.lastName,
-                    phone: leadData.phone || null,
-                    notes: leadData.notes || null,
-                })
-                .eq('email', leadData.email)
-                .eq('type', type);
+        // Try insert first, handle duplicate key error by updating
+        const { error: insertError } = await supabase
+            .from('leads')
+            .insert({
+                email: leadData.email,
+                first_name: leadData.firstName,
+                last_name: leadData.lastName,
+                phone: leadData.phone || null,
+                notes: leadData.notes || null,
+                type: type
+            });
 
-            if (error) {
-                console.error("Supabase update error:", error);
-                throw new Error(`Failed to update lead: ${error.message}`);
-            }
-        } else {
-            // Insert new lead
-            const { error } = await supabase
-                .from('leads')
-                .insert({
-                    email: leadData.email,
-                    first_name: leadData.firstName,
-                    last_name: leadData.lastName,
-                    phone: leadData.phone || null,
-                    notes: leadData.notes || null,
-                    type: type
-                });
+        if (insertError) {
+            // Check if it's a duplicate key error
+            if (insertError.code === '23505' && insertError.message.includes('unique_email_type')) {
+                console.log("Duplicate found, updating existing lead");
+                // Update existing lead
+                const { error: updateError } = await supabase
+                    .from('leads')
+                    .update({
+                        first_name: leadData.firstName,
+                        last_name: leadData.lastName,
+                        phone: leadData.phone || null,
+                        notes: leadData.notes || null,
+                    })
+                    .eq('email', leadData.email)
+                    .eq('type', type);
 
-            if (error) {
-                console.error("Supabase insert error:", error);
-                throw new Error(`Failed to save lead: ${error.message}`);
+                if (updateError) {
+                    console.error("Supabase update error:", updateError);
+                    throw new Error(`Failed to update lead: ${updateError.message}`);
+                }
+            } else {
+                // Some other error
+                console.error("Supabase insert error:", insertError);
+                throw new Error(`Failed to save lead: ${insertError.message}`);
             }
         }
     }
