@@ -5,22 +5,27 @@ import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
 
 export class SupabaseLeadRepository implements ILeadRepository {
     async save(leadData: LeadFormData, type: LeadType): Promise<void> {
-        // Use native upsert - should work now that we know the constraint name
+        // Simple insert - if duplicate exists, silently ignore (lead already captured)
         const { error } = await supabase
             .from('leads')
-            .upsert({
+            .insert({
                 email: leadData.email,
                 first_name: leadData.firstName,
                 last_name: leadData.lastName,
                 phone: leadData.phone || null,
                 notes: leadData.notes || null,
                 type: type
-            }, { 
-                onConflict: 'email,type'
             });
 
         if (error) {
-            console.error("Supabase upsert error:", error);
+            // If it's a duplicate key error, that's fine - lead already exists
+            if (error.code === '23505' && error.message.includes('unique_email_type')) {
+                console.log("Lead already exists for:", leadData.email, type);
+                return; // Silently succeed
+            }
+            
+            // For any other error, throw it
+            console.error("Supabase insert error:", error);
             throw new Error(`Failed to save lead: ${error.message}`);
         }
     }
