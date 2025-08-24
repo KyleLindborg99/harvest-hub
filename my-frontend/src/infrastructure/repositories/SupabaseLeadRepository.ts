@@ -5,24 +5,43 @@ import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
 
 export class SupabaseLeadRepository implements ILeadRepository {
     async save(leadData: LeadFormData, type: LeadType): Promise<void> {
-        // Try simple insert first - let's see if this works
-        const { error } = await supabase
-            .from('leads')
-            .insert({
-                email: leadData.email,
-                first_name: leadData.firstName,
-                last_name: leadData.lastName,
-                phone: leadData.phone || null,
-                notes: leadData.notes || null,
-                type: type
-            });
+        // Check if lead already exists
+        const existingLead = await this.exists(leadData.email, type);
+        
+        if (existingLead) {
+            // Update existing lead
+            const { error } = await supabase
+                .from('leads')
+                .update({
+                    first_name: leadData.firstName,
+                    last_name: leadData.lastName,
+                    phone: leadData.phone || null,
+                    notes: leadData.notes || null,
+                })
+                .eq('email', leadData.email)
+                .eq('type', type);
 
-        if (error) {
-            console.error("Full Supabase error:", error);
-            console.error("Error code:", error.code);
-            console.error("Error details:", error.details);
-            console.error("Error hint:", error.hint);
-            throw new Error(`Failed to save lead: ${error.message}`);
+            if (error) {
+                console.error("Supabase update error:", error);
+                throw new Error(`Failed to update lead: ${error.message}`);
+            }
+        } else {
+            // Insert new lead
+            const { error } = await supabase
+                .from('leads')
+                .insert({
+                    email: leadData.email,
+                    first_name: leadData.firstName,
+                    last_name: leadData.lastName,
+                    phone: leadData.phone || null,
+                    notes: leadData.notes || null,
+                    type: type
+                });
+
+            if (error) {
+                console.error("Supabase insert error:", error);
+                throw new Error(`Failed to save lead: ${error.message}`);
+            }
         }
     }
 
