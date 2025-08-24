@@ -1,5 +1,53 @@
-const { supabase } = require('../../src/services/supabaseClient');
-const EmailService = require('../../src/services/emailService');
+const { createClient } = require('@supabase/supabase-js');
+const nodemailer = require('nodemailer');
+
+// Supabase client
+const supabase = createClient(
+    process.env.SUPABASE_URL || 'https://uzqbsotbrwoactrcgooz.supabase.co',
+    process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InV6cWJzb3RicndvYWN0cmNnb296Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU4OTgzMzcsImV4cCI6MjA3MTQ3NDMzN30.2vqMCVWESqtu2_AQyQ_XlVmKQglYjFCk4qfxDvRyy3Y'
+);
+
+// Inline EmailService
+class EmailService {
+    constructor() {
+        this.transporter = nodemailer.createTransporter({
+            service: 'gmail',
+            auth: {
+                user: process.env.GMAIL_USER,
+                pass: process.env.GMAIL_APP_PASSWORD
+            }
+        });
+    }
+
+    async sendEmail({ to, subject, html, from }) {
+        const mailOptions = {
+            from: from || `HarvestHub <${process.env.GMAIL_USER}>`,
+            to,
+            subject,
+            html
+        };
+        const result = await this.transporter.sendMail(mailOptions);
+        return { success: true, messageId: result.messageId };
+    }
+
+    async sendWelcomeEmail(email, firstName, membershipType) {
+        const subject = `Welcome to HarvestHub${membershipType === 'trial' ? ' - Free Trial Started!' : '!'}`;
+        const html = `<div style="font-family: Arial, sans-serif;"><h2>Welcome ${firstName}!</h2><p>Thanks for joining HarvestHub!</p></div>`;
+        return await this.sendEmail({ to: email, subject, html });
+    }
+
+    async sendTrialEndingEmail(email, firstName, trialEndDate) {
+        const subject = 'Your HarvestHub Trial Ends Soon';
+        const html = `<div style="font-family: Arial, sans-serif;"><h2>Hi ${firstName}</h2><p>Your trial ends ${trialEndDate}</p></div>`;
+        return await this.sendEmail({ to: email, subject, html });
+    }
+
+    async sendOrderConfirmationEmail(email, firstName, orderDetails) {
+        const subject = 'Order Confirmed!';
+        const html = `<div style="font-family: Arial, sans-serif;"><h2>Hi ${firstName}</h2><p>Your ${orderDetails.shareType} order is confirmed!</p></div>`;
+        return await this.sendEmail({ to: email, subject, html });
+    }
+}
 
 // Main function to process all notification types
 exports.handler = async (event, context) => {
