@@ -1,11 +1,21 @@
 [build]
   command = "cd harvest-hub-web && npm install && npm run build"
   publish = "harvest-hub-web/dist"
+  functions = "harvest-hub-web/netlify/functions"
 
 [build.environment]
   NODE_VERSION = "18"
 
-# SPA redirect - send all routes to index.html
+[functions]
+  node_bundler = "esbuild"
+
+# API redirects for functions
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# SPA redirect - send all routes to index.html (must be last)
 [[redirects]]
   from = "/*"
   to = "/index.html"
