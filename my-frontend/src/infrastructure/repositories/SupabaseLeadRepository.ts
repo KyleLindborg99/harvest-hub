@@ -6,9 +6,12 @@ import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
 export class SupabaseLeadRepository implements ILeadRepository {
     async save(leadData: LeadFormData, type: LeadType): Promise<void> {
         // Check if lead already exists
+        console.log("Checking if lead exists:", leadData.email, type);
         const existingLead = await this.exists(leadData.email, type);
+        console.log("Exists result:", existingLead);
         
         if (existingLead) {
+            console.log("Updating existing lead");
             // Update existing lead
             const { error } = await supabase
                 .from('leads')
@@ -26,6 +29,7 @@ export class SupabaseLeadRepository implements ILeadRepository {
                 throw new Error(`Failed to update lead: ${error.message}`);
             }
         } else {
+            console.log("Inserting new lead");
             // Insert new lead
             const { error } = await supabase
                 .from('leads')
