@@ -5,50 +5,23 @@ import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
 
 export class SupabaseLeadRepository implements ILeadRepository {
     async save(leadData: LeadFormData, type: LeadType): Promise<void> {
-        // Try insert first, handle duplicate key error by updating
-        const { error: insertError } = await supabase
+        // Use native upsert - should work now that we know the constraint name
+        const { error } = await supabase
             .from('leads')
-            .insert({
+            .upsert({
                 email: leadData.email,
                 first_name: leadData.firstName,
                 last_name: leadData.lastName,
                 phone: leadData.phone || null,
                 notes: leadData.notes || null,
                 type: type
+            }, { 
+                onConflict: 'email,type'
             });
 
-        if (insertError) {
-            // Check if it's a duplicate key error
-            if (insertError.code === '23505' && insertError.message.includes('unique_email_type')) {
-                console.log("Duplicate found, updating existing lead for:", leadData.email, type);
-                // Update existing lead
-                const { data: updateData, error: updateError } = await supabase
-                    .from('leads')
-                    .update({
-                        first_name: leadData.firstName,
-                        last_name: leadData.lastName,
-                        phone: leadData.phone || null,
-                        notes: leadData.notes || null,
-                    })
-                    .eq('email', leadData.email)
-                    .eq('type', type)
-                    .select();
-
-                console.log("Update result:", { updateData, updateError });
-
-                if (updateError) {
-                    console.error("Supabase update error:", updateError);
-                    throw new Error(`Failed to update lead: ${updateError.message}`);
-                }
-
-                if (!updateData || updateData.length === 0) {
-                    console.warn("No records were updated - check if email/type match exactly");
-                }
-            } else {
-                // Some other error
-                console.error("Supabase insert error:", insertError);
-                throw new Error(`Failed to save lead: ${insertError.message}`);
-            }
+        if (error) {
+            console.error("Supabase upsert error:", error);
+            throw new Error(`Failed to save lead: ${error.message}`);
         }
     }
 
