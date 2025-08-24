@@ -1,0 +1,13 @@
+name: Test Email Notifications
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Test Netlify Function
+      run: |
+        echo "Testing notification function..."
+        curl -X POST "${{ secrets.NETLIFY_FUNCTION_URL }}"
