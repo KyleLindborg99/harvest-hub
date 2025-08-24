@@ -5,22 +5,23 @@ import type { Lead, LeadFormData, LeadType } from "../../domain/models/Lead";
 
 export class SupabaseLeadRepository implements ILeadRepository {
     async save(leadData: LeadFormData, type: LeadType): Promise<void> {
-        // Use upsert to insert new or update existing records silently
+        // Try simple insert first - let's see if this works
         const { error } = await supabase
             .from('leads')
-            .upsert({
+            .insert({
                 email: leadData.email,
                 first_name: leadData.firstName,
                 last_name: leadData.lastName,
                 phone: leadData.phone || null,
                 notes: leadData.notes || null,
                 type: type
-            }, { 
-                onConflict: 'email,type'
             });
 
         if (error) {
-            console.error("Supabase error:", error);
+            console.error("Full Supabase error:", error);
+            console.error("Error code:", error.code);
+            console.error("Error details:", error.details);
+            console.error("Error hint:", error.hint);
             throw new Error(`Failed to save lead: ${error.message}`);
         }
     }
