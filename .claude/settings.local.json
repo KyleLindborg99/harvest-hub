@@ -14,7 +14,8 @@
       "Bash(git push:*)",
       "Bash(node:*)",
       "WebFetch(domain:harvest-hub-michigan.netlify.app)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(git mv:*)"
     ],
     "deny": [],
     "ask": []

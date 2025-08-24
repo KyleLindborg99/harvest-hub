@@ -1,6 +1,6 @@
 [build]
-  command = "cd my-frontend && npm install && npm run build"
-  publish = "my-frontend/dist"
+  command = "cd harvest-hub-web && npm install && npm run build"
+  publish = "harvest-hub-web/dist"
 
 [build.environment]
   NODE_VERSION = "18"

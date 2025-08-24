@@ -19,24 +19,24 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: my-frontend/package-lock.json
+        cache-dependency-path: harvest-hub-web/package-lock.json
 
     - name: Install dependencies
-      working-directory: ./my-frontend
+      working-directory: ./harvest-hub-web
       run: npm ci
 
     - name: Run tests (if any)
-      working-directory: ./my-frontend
+      working-directory: ./harvest-hub-web
       run: npm run lint --if-present
 
     - name: Build application
-      working-directory: ./my-frontend
+      working-directory: ./harvest-hub-web
       run: npm run build
 
     - name: Deploy to Netlify
       uses: nwtgck/actions-netlify@v3
       with:
-        publish-dir: './my-frontend/dist'
+        publish-dir: './harvest-hub-web/dist'
         production-branch: main
         github-token: ${{ secrets.GITHUB_TOKEN }}
         deploy-message: "Deploy from GitHub Actions"

@@ -13,8 +13,8 @@ If you prefer an even simpler setup without managing tokens, use Netlify's built
 ### 2. Configure Build Settings
 ```
 Build command: npm run build
-Publish directory: my-frontend/dist
-Base directory: my-frontend
+Publish directory: harvest-hub-web/dist
+Base directory: harvest-hub-web
 ```
 
 ### 3. Deploy!

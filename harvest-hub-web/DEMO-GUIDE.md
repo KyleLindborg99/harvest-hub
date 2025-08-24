@@ -25,7 +25,7 @@ Your HarvestHub application is now live at: **https://harvest-hub-michigan.netli
 - Direct member form: https://harvest-hub-michigan.netlify.app/lead/members
 
 ## Next Steps for Production
-1. Consider renaming the project directory from "my-frontend" to "harvest-hub-frontend"
+1. ✅ Project directory renamed to "harvest-hub-web"
 2. Set up custom domain if needed (e.g., app.harvesthub.com)
 3. Set up Supabase Row Level Security (RLS) for production
 4. Configure form validation and error handling
