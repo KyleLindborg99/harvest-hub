@@ -114,6 +114,13 @@ async function processTrialReminders(emailService, results) {
 
         for (const member of trialMembers || []) {
             try {
+                // Check if we already sent trial reminder for this member
+                const alreadySent = await checkNotificationSent(member.lead_id, 'trial_ending_reminder');
+                if (alreadySent) {
+                    console.log(`Trial reminder already sent to ${member.leads.email}`);
+                    continue;
+                }
+
                 await emailService.sendTrialEndingEmail(
                     member.leads.email,
                     member.leads.first_name,
