@@ -115,8 +115,12 @@ async function processTrialReminders(emailService, results) {
             .lte('trial_end_date', endDate);
         
         console.log('DEBUG: Found trial members:', trialMembers);
+        console.log('DEBUG: Query error:', error);
 
-        if (error) throw error;
+        if (error) {
+            console.error('Database query failed:', error);
+            throw error;
+        }
 
         console.log(`Found ${trialMembers?.length || 0} trial members ending in 1-5 days (${startDate} to ${endDate})`);
 
