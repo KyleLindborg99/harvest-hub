@@ -114,10 +114,17 @@ async function processTrialReminders(emailService, results) {
 
         for (const member of trialMembers || []) {
             try {
-                // Check if we already sent trial reminder for this member
-                const alreadySent = await checkNotificationSent(member.lead_id, 'trial_ending_reminder');
-                if (alreadySent) {
-                    console.log(`Trial reminder already sent to ${member.leads.email}`);
+                // Check if we already sent trial reminder for this specific membership in the last 7 days
+                const { data: recentReminders } = await supabase
+                    .from('email_notifications')
+                    .select('id')
+                    .eq('lead_id', member.lead_id)
+                    .eq('notification_type', 'trial_ending_reminder')
+                    .gte('sent_at', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()) // Last 7 days
+                    .limit(1);
+
+                if (recentReminders && recentReminders.length > 0) {
+                    console.log(`Trial reminder already sent recently to ${member.leads.email}`);
                     continue;
                 }
 
