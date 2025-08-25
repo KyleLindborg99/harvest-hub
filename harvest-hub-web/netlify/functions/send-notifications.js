@@ -1,5 +1,6 @@
 const { createClient } = require('@supabase/supabase-js');
 const nodemailer = require('nodemailer');
+const { getWelcomeTemplate, getTrialEndingTemplate, getOrderConfirmationTemplate } = require('./email-templates');
 
 // Supabase client
 const supabase = createClient(
@@ -32,25 +33,26 @@ class EmailService {
 
     async sendWelcomeEmail(email, firstName, membershipType) {
         const subject = `Welcome to HarvestHub${membershipType === 'trial' ? ' - Free Trial Started!' : '!'}`;
-        const html = `<div style="font-family: Arial, sans-serif;"><h2>Welcome ${firstName}!</h2><p>Thanks for joining HarvestHub!</p></div>`;
+        const html = getWelcomeTemplate(firstName, membershipType);
         return await this.sendEmail({ to: email, subject, html });
     }
 
     async sendTrialEndingEmail(email, firstName, trialEndDate) {
         const subject = 'Your HarvestHub Trial Ends Soon';
-        const html = `<div style="font-family: Arial, sans-serif;"><h2>Hi ${firstName}</h2><p>Your trial ends ${trialEndDate}</p></div>`;
+        const html = getTrialEndingTemplate(firstName, trialEndDate);
         return await this.sendEmail({ to: email, subject, html });
     }
 
     async sendOrderConfirmationEmail(email, firstName, orderDetails) {
         const subject = 'Order Confirmed!';
-        const html = `<div style="font-family: Arial, sans-serif;"><h2>Hi ${firstName}</h2><p>Your ${orderDetails.shareType} order is confirmed!</p></div>`;
+        const html = getOrderConfirmationTemplate(firstName, orderDetails);
         return await this.sendEmail({ to: email, subject, html });
     }
 }
 
 // Main function to process all notification types
 exports.handler = async (event, context) => {
+    const startTime = Date.now();
     console.log('Starting notification processing...');
     
     try {
@@ -62,29 +64,36 @@ exports.handler = async (event, context) => {
             errors: []
         };
 
-        // Process trial ending reminders (3 days before expiration)
+        // Process all notification types
         await processTrialReminders(emailService, results);
-        
-        // Process welcome emails for new memberships (created in last 24 hours)
         await processWelcomeEmails(emailService, results);
-        
-        // Process order confirmations (new orders in last 24 hours)
         await processOrderConfirmations(emailService, results);
+
+        const duration = Date.now() - startTime;
+        console.log(`Notification processing completed in ${duration}ms`);
 
         return {
             statusCode: 200,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 message: 'Notifications processed successfully',
-                results
+                results,
+                executionTime: duration
             })
         };
     } catch (error) {
-        console.error('Error processing notifications:', error);
+        console.error('Critical error processing notifications:', error);
         return {
             statusCode: 500,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 error: 'Failed to process notifications',
-                details: error.message
+                details: error.message,
+                timestamp: new Date().toISOString()
             })
         };
     }
