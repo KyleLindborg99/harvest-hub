@@ -93,10 +93,14 @@ exports.handler = async (event, context) => {
 // Process trial ending reminders
 async function processTrialReminders(emailService, results) {
     try {
-        // Get memberships where trial ends in 3 days
-        const threeDaysFromNow = new Date();
-        threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
-        const targetDate = threeDaysFromNow.toISOString().split('T')[0];
+        // Get memberships where trial ends within 1-5 days (flexible window)
+        const oneDayFromNow = new Date();
+        oneDayFromNow.setDate(oneDayFromNow.getDate() + 1);
+        const fiveDaysFromNow = new Date();
+        fiveDaysFromNow.setDate(fiveDaysFromNow.getDate() + 5);
+        
+        const startDate = oneDayFromNow.toISOString().split('T')[0];
+        const endDate = fiveDaysFromNow.toISOString().split('T')[0];
 
         const { data: trialMembers, error } = await supabase
             .from('memberships')
@@ -106,11 +110,12 @@ async function processTrialReminders(emailService, results) {
             `)
             .eq('membership_type', 'trial')
             .eq('status', 'active')
-            .eq('trial_end_date', targetDate);
+            .gte('trial_end_date', startDate)
+            .lte('trial_end_date', endDate);
 
         if (error) throw error;
 
-        console.log(`Found ${trialMembers?.length || 0} trial members ending soon`);
+        console.log(`Found ${trialMembers?.length || 0} trial members ending in 1-5 days (${startDate} to ${endDate})`);
 
         for (const member of trialMembers || []) {
             try {
